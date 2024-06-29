@@ -1,3 +1,5 @@
+import random
+
 def welcome():
   name = ' Welcome in the game'
   print('.='*40)
@@ -26,21 +28,109 @@ def welcome():
  
   """)
   print(' \033[4;33m Notice.: You will have to get at least 3 classes correct to win the game \033[m')
+  print('\033[31m Write 6 to end the game. \033[m')
  
 
 def begin():
-  center = '1 - Start   |   2 - Exit'
+  center = 'Player (1)  |  Player (2)   |   3 - Exit'
+  game = 'Game'
+  print('{:^98}'.format(game))
   print('-'*100)
   print('\033[1;40;31m {:^98} \033[m'.format(center))
   print('-'*100)
   while True:
-    start = input('Choose: [1/2] ')
+    start = input('Choose: [1/2/3] ')
     if start == '1':
-      print('Well done')
+      player1()
       break
     elif start == '2':
+      player2()
+      break
+    elif start == '3':
       print('See you next time')
       break
     else:
       print('Uncknown value! Try again')
+
+def player1():
+  error = ['1 - Informational Responses (100 – 199)', '2 - Successful Responses (200 – 299)', '3 - Redirect Messages (300 – 399)', '4 - Client Error Responses (400 – 499)', '5 - Server Error Responses (500 – 599)']
+  status = {'player': '', 'win': 0, 'lose': 0, 'attempts': 0}
+  player = input('Write your name: ')
+  status[player] = player
+  win = 0
+  winner = 1
+  count = 1
   
+  while True:
+    print('Which class am I thinking about [1/5] ?')
+    print(f'\033[1;34m {error[0]} \n {error[1]} \n {error[2]} \n {error[3]} \n {error[4]} \033[m')
+    print('-'* 40)
+    rand = random.randint(1, 5)
+    n = int(input('Choose: '))
+    if rand == n:
+      print('\033[33m You are right! \033[m') 
+    elif win == 3:
+      status['win'] = winner + 1
+      print(status.items)
+      print('\033[32m You win! \033[m')
+      win = 0
+    elif count == 5:
+      ans = input('Do you want to continue [s/n]? ')
+      if ans == 's':
+         count = 0
+      else:
+        print(status.items())
+        print('See you next time!')
+        break
+    elif n == 6:
+      print(status.items())
+      print('Thanks for playing')
+      break
+    else:
+      print('\033[31m You are wrong! \033[m')
+      win = 0
+      winner = 0
+    count += 1
+    win += 1
+    
+    
+def player2():
+    error = ['1 - Informational Responses (100 – 199)', '2 - Successful Responses (200 – 299)', '3 - Redirect Messages (300 – 399)', '4 - Client Error Responses (400 – 499)', '5 - Server Error Responses (500 – 599)']
+    status = {'player': '', 'win': 0, 'lose': 0, 'attempts': 0}
+    player = input('Write your name: ')
+    status[player] = player
+    win = 1
+    winner = 1
+    count = 1
+
+    while True:
+      print('Which class am I thinking about [1/5] ?')
+      print(f'\033[1;34m {error[0]} {error[1]} {error[2]} \n {error[3]} {error[4]} \033[m')
+      print('-'* 40)
+      rand = random.randint(1, 5)
+      n = int(input('Choose: '))
+      if rand == n:
+        print('\033[33m You are right! \033[m') 
+      elif win == 3:
+        status['win'] = winner + 1
+        print(status.values)
+        print('\033[32m You win! \033[m')
+        win = 0
+      elif count == 5:
+        ans = input('Do you want to continue [s / n]?')
+        if ans == 's':
+           count = 0
+        else:
+          print(status.items())
+          print('See you next time!')
+          break
+      elif n == 6:
+        print('Thanks for playing')
+        break
+      else:
+        print('\033[31m You are wrong! \033[m')
+        win = 0
+        winner = 0
+        break
+      count += 1
+      win += 1
