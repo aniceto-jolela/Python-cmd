@@ -54,46 +54,73 @@ def begin():
 
 def player1():
   error = ['1 - Informational Responses (100 – 199)', '2 - Successful Responses (200 – 299)', '3 - Redirect Messages (300 – 399)', '4 - Client Error Responses (400 – 499)', '5 - Server Error Responses (500 – 599)']
-  status = {'player': '', 'win': 0, 'lose': 0, 'attempts': 0}
+  status = {'player': '', 'win': 0, 'point': 10, 'lose': 0, 'attempts': 0}
   player = input('Write your name: ')
   status[player] = player
   win = 0
-  winner = 1
+  point = 0
   count = 1
+  def restart():
+    status['win'] = 0
+    status['point'] = 10
+    status['lose'] = 0
+    status['attempts'] = 0
+    count = 1
   
   while True:
     print('Which class am I thinking about [1/5] ?')
     print(f'\033[1;34m {error[0]} \n {error[1]} \n {error[2]} \n {error[3]} \n {error[4]} \033[m')
     print('-'* 40)
     rand = random.randint(1, 5)
+    status['point'] -= 1
     n = int(input('Choose: '))
     if rand == n:
-      print('\033[33m You are right! \033[m') 
-    elif win == 3:
-      status['win'] = winner + 1
-      print(status.items)
-      print('\033[32m You win! \033[m')
-      win = 0
-    elif count == 5:
-      ans = input('Do you want to continue [s/n]? ')
-      if ans == 's':
-         count = 0
+      print('\033[33m You are right! \033[m')
+      status['win'] += 1
+      if status['win'] == 3:
+        details(status[player], status['win'],  status['point'], status['lose'], status['attempts'])
+        print('\033[32m You win! You are to be congratulated. 3 coins \033[m')
+        ans = input('Do you want to continue? [S/N] ')
+        if ans == 'S':
+          restart()
+          details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
+          continue
+        else:
+          break
       else:
-        print(status.items())
+        detail = input('Do you want to see the Status? [S/N] ')
+        if detail == 'S':
+          details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
+    elif status['point'] == 0:
+      print('Your points are over! You lose!')
+      status['attempts'] = 2
+      ans = input('Do you want to restart? [S/N] ')
+      if ans == 'S':
+        restart()
+        details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
+        continue
+      else:
+        details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
+        break
+    elif count == 5:
+      status['attempts'] = 1
+      ans = input('Do you want to continue? [S/N] ')
+      if ans == 'S':
+        count = 0
+      else:
+        details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
         print('See you next time!')
         break
     elif n == 6:
-      print(status.items())
+      details(status[player], status['win'], status['point'], status['lose'], status['attempts'])
       print('Thanks for playing')
       break
     else:
+      status['lose'] += 1
       print('\033[31m You are wrong! \033[m')
-      win = 0
-      winner = 0
     count += 1
-    win += 1
-    
-    
+   
+     
 def player2():
     error = ['1 - Informational Responses (100 – 199)', '2 - Successful Responses (200 – 299)', '3 - Redirect Messages (300 – 399)', '4 - Client Error Responses (400 – 499)', '5 - Server Error Responses (500 – 599)']
     status = {'player': '', 'win': 0, 'lose': 0, 'attempts': 0}
@@ -134,3 +161,21 @@ def player2():
         break
       count += 1
       win += 1
+
+
+def details(player = '', win = 0, point = 0, lose = 0, attempts = 0):
+  states = 'Status'
+  print('-' * 40)
+  print('{:^40}'.format(states))
+  print('-' * 40)
+  print(f'Player: {player}')
+  if win == 2:
+    print('\033[33m Almost there! 2 coins \033[m')
+  elif win == 1:
+    print('\033[33m took 1 coin!  \033[m')
+  elif win == 0:
+    print('\033[31m 0 coin!  \033[m')
+  print(f'Loses: {lose}')
+  print(f'Points: {point}')
+  print(f'Attemps: {attempts}')
+  print('-' * 40)
