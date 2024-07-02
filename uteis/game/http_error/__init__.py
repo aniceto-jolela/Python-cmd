@@ -237,6 +237,7 @@ def details(player = '', win = 0, point = 0, lose = 0, attempts = 0):
   print(f'Attemps: {attempts}')
   print('-' * 40)
 
+
 def details2(player = '', win = 0, point = 0, lose = 0, player2 = '', win2 = 0, point2 = 0, lose2 = 0, attempts = 0):
   """
   -> Prints the status of the players 1 and 2
